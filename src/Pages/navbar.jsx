@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../Context/UserContext';
-import { logOut } from '@/Api/authApi';
-import { Button } from '@/components/ui/button';
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../Context/UserContext";
+import { logOut } from "@/Api/authApi";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const { role, setRole } = useContext(UserContext);
 
   if (!role) {
-    setRole(localStorage.getItem('role'));
+    setRole(localStorage.getItem("role"));
   }
 
   const navigate = useNavigate();
@@ -17,10 +17,10 @@ const Navbar = () => {
     try {
       await logOut();
       setRole(null);
-      localStorage.removeItem('role');
-      navigate('/login');
+      localStorage.removeItem("role");
+      navigate("/login");
     } catch (error) {
-      console.log('Logout failed:', error);
+      console.log("Logout failed:", error);
     }
   };
 
@@ -38,7 +38,7 @@ const Navbar = () => {
           Home
         </Link>
 
-        {role === 'operator' && (
+        {role === "operator" && (
           <>
             <Link
               to="/scheduler"
@@ -46,17 +46,37 @@ const Navbar = () => {
             >
               Schedule a Bus
             </Link>
-           
           </>
         )}
 
-        {role === 'user' && (
-          <Link
-            to="/search"
-            className="text-white hover:text-blue-600 font-semibold transition-colors duration-300"
-          >
-            Search
-          </Link>
+
+        {role === "admin" && (
+          <>
+            <Link
+              to="/cancel-request"
+              className="text-white hover:text-blue-600 font-semibold transition-colors duration-300"
+            >
+              Cancel Requests
+            </Link>
+          </>
+        )}
+
+        {role === "user" && (
+          <>
+            <Link
+              to="/search"
+              className="text-white hover:text-blue-600 font-semibold transition-colors duration-300"
+            >
+              Search
+            </Link>
+
+            <Link
+              to="/my-tickets"
+              className="text-white hover:text-blue-600 font-semibold transition-colors duration-300"
+            >
+              My Tickets
+            </Link>
+          </>
         )}
       </div>
 
